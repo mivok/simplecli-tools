@@ -56,13 +56,9 @@ function do_edit(args, tempfile)
     end
 end
 
-function do_vi(args, tempfile)
-    do_edit(args, tempfile)
-end
-
-function do_vim(args, tempfile)
-    do_edit(args, tempfile)
-end
+-- Aliases
+do_vi = do_edit
+do_vim = do_edit
 
 help_get = "Download a file from s3"
 function do_get(args)
