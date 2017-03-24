@@ -55,6 +55,22 @@ function do_ls(args)
     ]]))
 end
 
+help_rls = [[Reverse lookup of a domain
+
+Lists records for a domain, filtering by IP (or value of the record if it
+isn't an A record)]]
+
+function do_rls(args)
+    os.execute(t([[
+    aws route53 list-resource-record-sets --hosted-zone-id {{zoneid}} |
+    jq -r '.ResourceRecordSets[] |
+        select(.ResourceRecords != null) |
+        .ResourceRecords[].Value as $value |
+        select($value | contains("{{args[1]}}")) |
+        [.Name, .TTL, .Type, $value] |
+        @tsv'
+    ]]))
+end
 
 help_rc=[[Create a new record or update an existing one
 
