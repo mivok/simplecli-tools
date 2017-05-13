@@ -77,6 +77,10 @@ help_rc=[[Create a new record or update an existing one
 Usage: rc myrecord.example.com 300 A 1.2.3.4]]
 
 function do_rc(args)
+    if args[3] == "CNAME" and string.sub(args[4], -1) ~= "." then
+        -- CNAME records should end in a dot almost always, so add it in
+        args[4] = args[4] .. "."
+    end
     os.execute(t([[aws route53 change-resource-record-sets \
     --hosted-zone-id {{zoneid}} \
     --change-batch '{
