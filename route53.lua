@@ -99,9 +99,9 @@ function do_rc(args)
 end
 
 
-help_rd =[[(Doesn't work yet) Delete a record from route53
+help_rd =[[Delete a record from route53
 
-Usage: rd myrecord.example.com 300 A]]
+Usage: rd myrecord.example.com 300 A 1.2.3.4]]
 
 function do_rd(args)
     os.execute(t([[aws route53 change-resource-record-sets \
@@ -113,7 +113,12 @@ function do_rd(args)
                 "ResourceRecordSet": {
                     "Name": "{{args[1]}}",
                     "TTL": {{args[2]}},
-                    "Type": "{{args[3]}}"
+                    "Type": "{{args[3]}}",
+                    "ResourceRecords": [
+                        {
+                            "Value": "{{args[4]}}"
+                        }
+                    ]
                 }
             }
         ]
